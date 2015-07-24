@@ -1,0 +1,25 @@
+{
+    "name": "ironshark/laravel-extendable",
+    "description": "Traits for Laravel to add and manage custom Eloquent model fields.",
+    "keywords": ["trait", "laravel", "eloquent", "extendable", "custom fields"],
+    "type": "library",
+    "require": {
+        "php": ">=5.3.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4.0"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Anton Pauli",
+            "email": "pauli@ironshark.de"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "IronShark\\Extendable\\": "src/"
+        }
+    },
+    "minimum-stability": "dev"
+}
