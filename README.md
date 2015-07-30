@@ -1,10 +1,9 @@
-laravel-extendable
-==================
+Laravel Extendable package
+==========================
 
 [![License](https://img.shields.io/github/license/ironsharkde/laravel-extendable.svg)](https://packagist.org/packages/ironshark/laravel-extendable)
 [![Downloads](https://img.shields.io/packagist/dt/ironshark/laravel-extendable.svg)](https://packagist.org/packages/ironshark/laravel-extendable)
 [![Version-stable](https://img.shields.io/packagist/v/ironshark/laravel-extendable.svg)](https://packagist.org/packages/ironshark/laravel-extendable)
-[![Version-dev](https://img.shields.io/packagist/vpre/ironshark/laravel-extendable.svg)](https://packagist.org/packages/ironshark/laravel-extendable)
 
 
 ## How to install
@@ -45,6 +44,26 @@ class Article extends \Illuminate\Database\Eloquent\Model {
 }
 ```
 
+### Config fields
+
+Use `app/config/custom-fields.php` to configure your fields.
+
+```php
+return [
+    'App\Room' => [                                                     // model name
+        'light' => [                                                    // field name
+            'title' => 'Light',                                         // field title (can be used in views)
+            'type' => \IronShark\Extendable\CustomFieldType::Radio,     // field type
+            'options' => [                                              // possible values/labels
+                0 => 'Off',
+                1 => 'On'
+            ],
+            'default' => 1                                              // default value
+        ]
+    ]
+];
+```
+
 ### Assign/retrieve customfield values 
 
 Assign custom field values as regular values.
@@ -65,8 +84,7 @@ Retrieve custom field values.
 ```php
 $article = Article::find(1);
 $article->recomended->value; // 1
-
-echo $article->recomended; // 1
+echo $article->recomended;   // 1
 ```
 
 ### Field types
