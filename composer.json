@@ -20,6 +20,5 @@
         "psr-4": {
             "IronShark\\Extendable\\": "src/"
         }
-    },
-    "minimum-stability": "dev"
+    }
 }
