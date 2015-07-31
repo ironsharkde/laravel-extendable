@@ -10,7 +10,7 @@ namespace IronShark\Extendable;
 
 use IronShark\Extendable\CustomFieldType;
 
-class CustomFieldConfigProvieder
+class CustomFieldConfigProvider
 {
     /**
      * Return config customfield configs for given model
