@@ -8,7 +8,7 @@
 
 namespace IronShark\Extendable;
 
-use IronShark\Extendable\CustomFieldConfigProvieder;
+use IronShark\Extendable\CustomFieldConfigProvider;
 
 
 trait ModelTrait
@@ -38,7 +38,7 @@ trait ModelTrait
         $instance = new static;
 
         if($relations === null)
-            $relations = CustomFieldConfigProvieder::fieldNames(get_class($instance));
+            $relations = CustomFieldConfigProvider::fieldNames(get_class($instance));
 
         if (is_string($relations)) {
             $relations = func_get_args();
@@ -83,7 +83,7 @@ trait ModelTrait
      * @return array
      */
     public function customFieldNames(){
-        return CustomFieldConfigProvieder::fieldNames(get_class($this));
+        return CustomFieldConfigProvider::fieldNames(get_class($this));
     }
 
 
