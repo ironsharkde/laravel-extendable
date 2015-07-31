@@ -58,6 +58,6 @@ class CustomFieldConfigProvieder
      */
     public static function fieldNames($modelClass) {
         $customFieldsConfig = config('custom-fields');
-        return array_keys($customFieldsConfig[$modelClass]);
+        return array_keys(array_get($customFieldsConfig, $modelClass, []));
     }
 }
