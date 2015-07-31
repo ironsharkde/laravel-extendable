@@ -3,7 +3,7 @@
 namespace IronShark\Extendable;
 
 use Illuminate\Database\Eloquent\Model;
-use IronShark\Extendable\CustomFieldConfigProvieder;
+use IronShark\Extendable\CustomFieldConfigProvider;
 
 class CustomField extends Model
 {
@@ -23,7 +23,7 @@ class CustomField extends Model
      * @return string
      */
     public function getAttributeName(){
-        return CustomFieldConfigProvieder::fieldType($this->parent_type, $this->field_name);
+        return CustomFieldConfigProvider::fieldType($this->parent_type, $this->field_name);
     }
 
 
