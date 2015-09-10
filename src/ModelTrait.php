@@ -191,13 +191,19 @@ trait ModelTrait
      * @throws \Exception
      */
     public function delete(){
+
+        // delete model
+        $parentResult = parent::delete();
+
         // delete custom fields
-        if(parent::delete()) {
+        if($parentResult) {
             CustomField::where([
                 'parent_type' => get_class($this),
                 'parent_id' => $this->id
             ])->delete();
         }
+
+        return $parentResult;
     }
 
 
