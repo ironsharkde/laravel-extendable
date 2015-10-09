@@ -250,4 +250,25 @@ trait ModelTrait
 
         return $model;
     }
+
+
+    /**
+     * Loads custom field model
+     *
+     * @param $fieldName
+     * @return mixed
+     */
+    public function getAttribute($fieldName) {
+        $model = parent::getAttribute($fieldName);
+
+        if($model === null && $this->exists) {
+            $model = CustomField::where([
+                'parent_type' => get_class($this),
+                'parent_id' => $this->id,
+                'field_name' => $fieldName
+            ])->first();
+        }
+
+        return $model;
+    }
 }
