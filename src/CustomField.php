@@ -22,7 +22,8 @@ class CustomField extends Model
      *
      * @return string
      */
-    public function getAttributeName(){
+    public function getAttributeName()
+    {
         return CustomFieldConfigProvider::fieldType($this->parent_type, $this->field_name);
     }
 
@@ -46,8 +47,9 @@ class CustomField extends Model
      */
     public function setValueAttribute($value)
     {
-        if($value instanceof self)
+        if ($value instanceof self) {
             throw new \Exception('Invalid custom attribute value');
+        }
 
         $attributeName = $this->getAttributeName();
         $this->$attributeName = $value;

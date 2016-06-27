@@ -18,7 +18,8 @@ class CustomFieldConfigProvider
      * @param $modelClass
      * @return mixed
      */
-    public static function customFieldConfigs($modelClass){
+    public static function customFieldConfigs($modelClass)
+    {
         $customFieldsConfig = config('custom-fields');
         return array_get($customFieldsConfig, $modelClass);
     }
@@ -31,7 +32,8 @@ class CustomFieldConfigProvider
      * @param $fieldName
      * @return string
      */
-    public static function fieldType($modelClass, $fieldName){
+    public static function fieldType($modelClass, $fieldName)
+    {
         $fieldConfigs = self::customFieldConfigs($modelClass);
 
         switch ($fieldConfigs[$fieldName]['type']) {
@@ -56,7 +58,8 @@ class CustomFieldConfigProvider
      * @param $modelClass
      * @return array
      */
-    public static function fieldNames($modelClass) {
+    public static function fieldNames($modelClass)
+    {
         $customFieldsConfig = config('custom-fields');
         return array_keys(array_get($customFieldsConfig, $modelClass, []));
     }

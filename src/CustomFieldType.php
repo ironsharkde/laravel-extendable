@@ -8,7 +8,6 @@
 
 namespace IronShark\Extendable;
 
-
 class CustomFieldType
 {
     const String = "string";

@@ -10,7 +10,6 @@ namespace IronShark\Extendable;
 
 use IronShark\Extendable\CustomFieldConfigProvider;
 
-
 trait ModelTrait
 {
     public $customAttributes = [];
@@ -20,8 +19,8 @@ trait ModelTrait
      */
     public static function bootModelTrait()
     {
-        static::creating(function($item){
-            foreach($item->customFieldNames() as $name){
+        static::creating(function ($item) {
+            foreach ($item->customFieldNames() as $name) {
             }
         });
     }
@@ -37,8 +36,9 @@ trait ModelTrait
     {
         $instance = new static;
 
-        if($relations === null)
+        if ($relations === null) {
             $relations = CustomFieldConfigProvider::fieldNames(get_class($instance));
+        }
 
         if (is_string($relations)) {
             $relations = func_get_args();
@@ -57,8 +57,9 @@ trait ModelTrait
      */
     public function __call($name, $arguments)
     {
-        if($this->isCustomField($name))
+        if ($this->isCustomField($name)) {
             return $this->customFieldRelation($name);
+        }
 
         $query = $this->newQuery();
         return call_user_func_array(array($query, $name), $arguments);
@@ -71,7 +72,8 @@ trait ModelTrait
      * @param $fieldName
      * @return mixed
      */
-    public function customFieldRelation($fieldName){
+    public function customFieldRelation($fieldName)
+    {
         return $this->morphOne('IronShark\Extendable\CustomField', 'parent', 'parent_type')
             ->where('field_name', $fieldName);
     }
@@ -82,7 +84,8 @@ trait ModelTrait
      *
      * @return array
      */
-    public function customFieldNames(){
+    public function customFieldNames()
+    {
         return CustomFieldConfigProvider::fieldNames(get_class($this));
     }
 
@@ -93,7 +96,8 @@ trait ModelTrait
      * @param $attributeName
      * @return bool
      */
-    public function isCustomField($attributeName){
+    public function isCustomField($attributeName)
+    {
         return in_array($attributeName, $this->customFieldNames());
     }
 
@@ -104,10 +108,12 @@ trait ModelTrait
      * @param $name
      * @return mixed
      */
-    public function __get($name) {
+    public function __get($name)
+    {
         // return custom field value
-        if($this->isCustomField($name))
+        if ($this->isCustomField($name)) {
             return $this->getCustomFieldModel($name)->value;
+        }
 
         // return model attribute
         return $this->getAttribute($name);
@@ -124,15 +130,15 @@ trait ModelTrait
     public function __set($key, $value)
     {
         // set
-        if($this->isCustomField($key)){
-            if($value instanceof CustomField)
+        if ($this->isCustomField($key)) {
+            if ($value instanceof CustomField) {
                 $this->$key = $value;
-            else
+            } else {
                 $this->customAttributes[$key] = $value;
+            }
         } else {
             parent::__set($key, $value);
         }
-
     }
 
 
@@ -142,12 +148,12 @@ trait ModelTrait
      * @param  array  $options
      * @return bool
      */
-    public function save(array $options = array()){
-
+    public function save(array $options = array())
+    {
         parent::save($options);
 
         // save custom fields
-        foreach($this->customFieldNames() as $name){
+        foreach ($this->customFieldNames() as $name) {
             // custom field model instance
             $customFieldModel = $this->getCustomFieldModel($name);
             $customFieldModel->value = isset($this->customAttributes[$name]) ? $this->customAttributes[$name] : null;
@@ -164,7 +170,8 @@ trait ModelTrait
      *
      * @throws \Illuminate\Database\Eloquent\MassAssignmentException
      */
-    public function fill(array $attributes) {
+    public function fill(array $attributes)
+    {
         $this->fillCustomAttributes($attributes);
         parent::fill($attributes);
     }
@@ -175,11 +182,12 @@ trait ModelTrait
      *
      * @param array $attributes
      */
-    public function fillCustomAttributes(array $attributes){
-        foreach($this->customFieldNames() as $name) {
-
-            if(isset($attributes[$name]))
+    public function fillCustomAttributes(array $attributes)
+    {
+        foreach ($this->customFieldNames() as $name) {
+            if (isset($attributes[$name])) {
                 $this->customAttributes[$name] = $attributes[$name];
+            }
         }
     }
 
@@ -190,13 +198,14 @@ trait ModelTrait
      * @return bool|null
      * @throws \Exception
      */
-    public function delete(){
+    public function delete()
+    {
 
         // delete model
         $parentResult = parent::delete();
 
         // delete custom fields
-        if($parentResult) {
+        if ($parentResult) {
             CustomField::where([
                 'parent_type' => get_class($this),
                 'parent_id' => $this->id
@@ -213,7 +222,8 @@ trait ModelTrait
      * @param $key
      * @return mixed
      */
-    public function customFieldModel($key) {
+    public function customFieldModel($key)
+    {
         return $this->relations[$key];
     }
 
@@ -224,7 +234,8 @@ trait ModelTrait
      * @param $fieldName
      * @return CustomField
      */
-    public function newCustomFieldModel($fieldName){
+    public function newCustomFieldModel($fieldName)
+    {
         return new CustomField([
             'field_name' => $fieldName,
             'parent_type' => get_class($this),
@@ -239,11 +250,11 @@ trait ModelTrait
      * @param $fieldName
      * @return CustomField
      */
-    public function getCustomFieldModel($fieldName){
-
+    public function getCustomFieldModel($fieldName)
+    {
         $model = $this->getAttribute($fieldName);
 
-        if($model === null){
+        if ($model === null) {
             $model = $this->newCustomFieldModel($fieldName);
             //$this->$fieldName = $model;
         }
@@ -258,10 +269,11 @@ trait ModelTrait
      * @param $fieldName
      * @return mixed
      */
-    public function getAttribute($fieldName) {
+    public function getAttribute($fieldName)
+    {
         $model = parent::getAttribute($fieldName);
 
-        if($model === null && $this->exists) {
+        if ($model === null && $this->exists) {
             $model = CustomField::where([
                 'parent_type' => get_class($this),
                 'parent_id' => $this->id,

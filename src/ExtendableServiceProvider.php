@@ -14,16 +14,20 @@ class ExtendableServiceProvider extends ServiceProvider
 {
     protected $defer = true;
 
-    public function boot() {
+    public function boot()
+    {
         $this->publishes([
             __DIR__.'/migrations/2015_07_23_134516_create_custom_fields_table.php' => database_path('migrations/2015_07_23_134516_create_custom_fields_table.php'),
             __DIR__.'/config/custom-fields.php' => config_path('custom-fields.php'),
         ]);
     }
 
-    public function register() {}
+    public function register()
+    {
+    }
 
-    public function when() {
+    public function when()
+    {
         return array('artisan.start');
     }
 }
