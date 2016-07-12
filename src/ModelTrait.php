@@ -137,7 +137,7 @@ trait ModelTrait
                 $this->customAttributes[$key] = $value;
             }
         } else {
-            parent::__set($key, $value);
+            return parent::__set($key, $value);
         }
     }
 
@@ -150,7 +150,7 @@ trait ModelTrait
      */
     public function save(array $options = array())
     {
-        parent::save($options);
+        $parentResult = parent::save($options);
 
         // save custom fields
         foreach ($this->customFieldNames() as $name) {
@@ -159,6 +159,8 @@ trait ModelTrait
             $customFieldModel->value = isset($this->customAttributes[$name]) ? $this->customAttributes[$name] : null;
             $customFieldModel->save();
         }
+
+        return $parentResult;
     }
 
 
@@ -173,7 +175,7 @@ trait ModelTrait
     public function fill(array $attributes)
     {
         $this->fillCustomAttributes($attributes);
-        parent::fill($attributes);
+        return parent::fill($attributes);
     }
 
 
