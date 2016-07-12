@@ -36,7 +36,7 @@ php artisan migrate
 
 ### Add traits
 
-Add model trait to models, where you wat to use custom fields.
+Add model trait to models, where you want to use custom fields.
 
 ```php
 class Article extends \Illuminate\Database\Eloquent\Model {
